@@ -18,7 +18,7 @@ class PropriedadeController extends Controller
     {
         return response()->json([
             "message" => "Lista de propriedades",
-            "data" => Propriedade::with("medidas","contatos")->paginate(10),
+            "data" => Propriedade::with("medidas")->paginate(10),
             "status_code" => 200
         ], 200);
     }
