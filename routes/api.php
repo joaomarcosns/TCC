@@ -12,19 +12,19 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::controller(MedidasController::class)->name('medidas.')->prefix('medidas')->group(function() {
-    Route::get('/', 'index')->name('index')->middleware('auth:api');
+    Route::get('/', 'index')->name('index');
     Route::post('/', 'store')->name('store');
-    Route::get('/{id}', 'show')->name('show')->middleware('auth:api');
-    Route::put('/{id}', 'update')->name('update')->middleware('auth:api');
-    Route::delete('/{id}', 'destroy')->name('destroy')->middleware('auth:api');
+    Route::get('/{id}', 'show')->name('show');
+    Route::put('/{id}', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
 });
 
 Route::controller(PropriedadeController::class)->name('propriedade.')->prefix('propriedade')->group(function() {
-    Route::get('/', 'index')->name('index')->middleware('auth:api');
+    Route::get('/', 'index')->name('index');
     Route::post('/', 'store')->name('store');
-    Route::get('/{id}', 'show')->name('show')->middleware('auth:api');
-    Route::put('/{id}', 'update')->name('update')->middleware('auth:api');
-    Route::delete('/{id}', 'destroy')->name('destroy')->middleware('auth:api');
+    Route::get('/{id}', 'show')->name('show');
+    Route::put('/{id}', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
 });
 
 Route::controller(EstacaoController::class)->name('estacao.')->prefix('estacao')->group(function() {
