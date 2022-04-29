@@ -25,7 +25,7 @@ class SetorController extends Controller
             ->join('area', 'setor.area_id', '=', 'area.id')
             ->select('area.nome as area', 'setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status', 'setor.etc')
             ->where('data_das_podas.status', '=', 1)
-            ->orderByRaw('data_das_podas.id DESC')
+            ->orderByRaw('area DESC')
             ->paginate(10);
 
         $kcPlata = KcPlanta::where('id', "1")->get();
