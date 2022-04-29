@@ -20,28 +20,15 @@ class SetorController extends Controller
      */
     public function index()
     {
-        $setores = DataPodas::leftJoin('setor', 'data_das_podas.setor_id', '=', 'setor.id')
-            ->select('setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status')
-            ->where('data_das_podas.status', '=', 1)
-            ->orderByRaw('data_das_podas.id DESC')
-            ->get();
-
-        if ($setores->isEmpty()) {
-            return response()->json([
-                'message' => 'Lista de Setores n',
-                'data' => DataPodas::leftJoin('setor', 'data_das_podas.setor_id', '=', 'setor.id')
-                    ->select('setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status')->paginate(10),
-                'status_code' => 200,
-            ], 200);
-        }
-        $setores = DataPodas::leftJoin('setor', 'data_das_podas.setor_id', '=', 'setor.id')
-            ->select('setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status', 'setor.etc')
+        try {
+            $setores = DataPodas::leftJoin('setor', 'data_das_podas.setor_id', '=', 'setor.id')
+            ->join('area', 'setor.area_id', '=', 'area.id')
+            ->select('area.nome as area', 'setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status', 'setor.etc')
             ->where('data_das_podas.status', '=', 1)
             ->orderByRaw('data_das_podas.id DESC')
             ->paginate(10);
 
         $kcPlata = KcPlanta::where('id', "1")->get();
-        $totalDiasKc = $kcPlata[0]->dias_cescimento + $kcPlata[0]->dias_poda + $kcPlata[0]->dias_producao;
         $dias_poda = $kcPlata[0]->dias_poda;
         $dias_cescimento = $kcPlata[0]->dias_cescimento;
         $dias_producao = $kcPlata[0]->dias_producao;
@@ -82,6 +69,13 @@ class SetorController extends Controller
             'data' => $setores,
             'status_code' => 200
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao listar os setores',
+                'data' => $e->getMessage(),
+                'status_code' => 200
+            ], 200);
+        }
     }
 
     /**
