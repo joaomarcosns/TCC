@@ -71,8 +71,6 @@ class EstacaoController extends Controller
 
         //////////////////// calculo ////////////////////////////////
 
-        // calcular dua juliano j
-        $dataAtual = date('Y-m-d');
         $j = date('z', strtotime($diaAnterior));
         // Claculando declinação solar &
         $parteUm = ((2 * 3.1415) / 365);
@@ -197,5 +195,53 @@ class EstacaoController extends Controller
         $et0 = $_10;
 
         return $et0;
+    }
+
+    public function dadosMeteriologicos() {
+        $diaAnterior = date('Y-m-d', strtotime('-1 day'));
+        $res = Http::get("https://apitempo.inmet.gov.br/estacao/{$diaAnterior}/{$diaAnterior}/A426");
+        // $res = Http::get("https://apitempo.inmet.gov.br/estacao/2022-04-29/2022-04-29/A426");
+        $object = $res->object();
+
+
+        $temperaturaMax = 0;
+        $umidadeMax = 0;
+        $velocidadeDoVentoMax = 0;
+        $radiacaoSolarMax = 0;
+        $pressaoAtmosfericaMax = 0;
+
+
+        $temperaturaMin = 9999;
+        $umidadeMin = 9999;
+        $velocidadeDoVentoMin = 9999;
+        $radiacaoSolarMin = 9999;
+        $pressaoAtmosfericaMin = 999999;
+
+        foreach ($object as $item) {
+            // saber qual o maior valor
+            $temperaturaMax = $item->TEM_INS > $temperaturaMax ? $item->TEM_INS : $temperaturaMax;
+            $umidadeMax = $item->UMD_INS > $umidadeMax ? $item->UMD_INS : $umidadeMax;
+            $velocidadeDoVentoMax = $item->VEN_VEL > $velocidadeDoVentoMax ? $item->VEN_VEL : $velocidadeDoVentoMax;
+            $radiacaoSolarMax = $item->RAD_GLO > $radiacaoSolarMax ? $item->RAD_GLO : $radiacaoSolarMax;
+            $pressaoAtmosfericaMax = $item->PRE_MAX >  $pressaoAtmosfericaMax ? $item->PRE_MAX : $pressaoAtmosfericaMax;
+
+            // Saber qual e o menor valor
+            $temperaturaMin = $item->TEM_INS < $temperaturaMin && $item->TEM_INS ? $item->TEM_INS : $temperaturaMin;
+            $umidadeMin = $item->UMD_INS < $umidadeMin && $item->UMD_INS ? $item->UMD_INS : $umidadeMin;
+            $velocidadeDoVentoMin = $item->VEN_VEL < $velocidadeDoVentoMin && $item->VEN_VEL ? $item->VEN_VEL : $velocidadeDoVentoMin;
+            $radiacaoSolarMin = $item->RAD_GLO < $radiacaoSolarMin && $item->RAD_GLO ? $item->RAD_GLO : $radiacaoSolarMin;
+            $pressaoAtmosfericaMin = $item->PRE_MIN < $pressaoAtmosfericaMin && $item->PRE_MIN ? $item->PRE_MIN : $pressaoAtmosfericaMin;
+        }
+
+        $data = [
+            'radiacaoSolar' => ($radiacaoSolarMax + $radiacaoSolarMin) / 2,
+            'presaoAtmosferica' => ($pressaoAtmosfericaMax+$pressaoAtmosfericaMin) / 2,
+            'umidade' => ($umidadeMax + $umidadeMin) / 2,
+            'velociadaDoVento' => ($velocidadeDoVentoMax + $velocidadeDoVentoMin) / 2,
+            'temperaturaMax' => $temperaturaMax,
+            'temperaturaMin' => $temperaturaMin,
+        ];
+
+        return response()->json($data);
     }
 }

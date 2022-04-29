@@ -29,6 +29,7 @@ Route::controller(PropriedadeController::class)->name('propriedade.')->prefix('p
 
 Route::controller(EstacaoController::class)->name('estacao.')->prefix('estacao')->group(function() {
     Route::get('/et0', 'et0')->name('et0');
+    Route::get('/dados-meteriologicos', 'dadosMeteriologicos')->name('dados-meteriologicos');
 });
 
 Route::controller(Eto::class)->name('eto.')->prefix('eto')->group(function() {
