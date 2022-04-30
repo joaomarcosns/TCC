@@ -48,13 +48,7 @@ class SetorTest extends TestCase
             "propriedade_id" => $propriedade->id,
         ]);
 
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-
         $response = $this->post("{$this->url}setor", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             "identificador" => "Setor 01",
@@ -93,13 +87,7 @@ class SetorTest extends TestCase
             "propriedade_id" => $propriedade->id,
         ]);
 
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-
         $response = $this->post("{$this->url}setor", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             "identificador" => "Setor 01",
@@ -138,13 +126,7 @@ class SetorTest extends TestCase
             "propriedade_id" => $propriedade->id,
         ]);
 
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-
         $response = $this->post("{$this->url}setor", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             "identificador" => "",
@@ -188,13 +170,7 @@ class SetorTest extends TestCase
             "area_id" => $area->id,
         ]);
 
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-
         $response = $this->put("{$this->url}setor/{$setor->id}", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             "identificador" => "Setor 02",
@@ -237,13 +213,7 @@ class SetorTest extends TestCase
             "area_id" => $area->id,
         ]);
 
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-
         $response = $this->delete("{$this->url}setor/{$setor->id}", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);

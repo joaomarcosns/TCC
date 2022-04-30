@@ -18,7 +18,7 @@ class DataPodasController extends Controller
     {
         return response()->json([
             'message' => 'Lista de DataPodas',
-            'data' => DataPodas::paginate(10),
+            'data' => DataPodas::all(),
             'status_code' => 200
         ], 200);
     }

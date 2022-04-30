@@ -40,14 +40,7 @@ class AreaTest extends TestCase
             "estado" => "BA",
             "medida_id" => $medida->id
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-        
         $response = $this->post("{$this->url}area", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'nome' => 'Area 1',
@@ -80,14 +73,7 @@ class AreaTest extends TestCase
             "estado" => "BA",
             "medida_id" => $medida->id
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
-        
         $response = $this->post("{$this->url}area", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'nome' => '',
@@ -120,14 +106,8 @@ class AreaTest extends TestCase
             "estado" => "BA",
             "medida_id" => $medida->id
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
         
         $response = $this->post("{$this->url}area", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'nome' => 'Area 1',
@@ -164,14 +144,8 @@ class AreaTest extends TestCase
             "descricao" => "Area 1 description",
             "propriedade_id" => $propriedade->id,
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
         
         $response = $this->put("{$this->url}area/{$area->id}", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'nome' => 'Area 1',
@@ -210,14 +184,8 @@ class AreaTest extends TestCase
             "descricao" => "Area 1 description",
             "propriedade_id" => $propriedade->id,
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
         
         $response = $this->put("{$this->url}area/{$area->id}", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'nome' => '',
@@ -255,14 +223,8 @@ class AreaTest extends TestCase
             "descricao" => "Area 1 description",
             "propriedade_id" => $propriedade->id,
         ]);
-
-        Passport::actingAs(
-            $user  = User::factory()->createOne(),
-            ['create-servers']
-        );
         
         $response = $this->delete("{$this->url}area/{$area->id}", [
-            'Authorization' => "Bearer {$user->createToken('Personal Access Token')->accessToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);

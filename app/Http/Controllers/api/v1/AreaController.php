@@ -19,7 +19,7 @@ class AreaController extends Controller
         try {
             return response()->json([
                 "menssage" => "Lista de áreas",
-                "data" => Area::paginate(10),
+                "data" => Area::all(),
                 "status_code" => 200,
             ], 200);
         } catch (\Exception $e) {

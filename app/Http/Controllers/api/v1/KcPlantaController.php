@@ -15,7 +15,7 @@ class KcPlantaController extends Controller
      */
     public function index()
     {
-        return response()->json(KcPlanta::paginate(10));
+        return response()->json(KcPlanta::all());
     }
 
     /**

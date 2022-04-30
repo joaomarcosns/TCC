@@ -19,7 +19,7 @@ class MedidasController extends Controller
     {
         return response()->json([
             "message" => "Lista de medidas",
-            "data" => Medidas::with("propriedade")->paginate(10),
+            "data" => Medidas::with("propriedade")->get(),
             "status_code" => 200
         ], 200);
     }
