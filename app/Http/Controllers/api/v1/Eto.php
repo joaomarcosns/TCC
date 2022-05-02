@@ -73,4 +73,64 @@ class Eto extends Controller
     {
         //
     }
+
+    public function filtroEto($id)
+    {
+        switch ($id) {
+            case 1:
+                $eto = DB::select("SELECT * FROM et0 LIMIT 10");
+                return response()->json([
+                    'message' => 'Todos os Eto dos ultimos 10 dias.',
+                    'data' => $eto,
+                    'status_code' => 200
+                ], 200);
+                break;
+            case 2:
+                $eto = DB::select("SELECT * FROM et0 WHERE MONTH(created_at) = MONTH(CURRENT_DATE())");
+                return response()->json([
+                    'message' => 'Todos os Eto do mês atual.',
+                    'data' => $eto,
+                    'status_code' => 200
+                ], 200);
+                break;
+            case 3:
+                $monthEtoDuplicade = DB::select("SELECT MONTH(created_at) FROM et0");
+                $monthEto = array_unique(array_column($monthEtoDuplicade, 'MONTH(created_at)'));
+                $eto = [];
+                foreach ($monthEto as $key => $value) {
+                    $eto[$value] = DB::select("SELECT AVG(et0) as et0,MONTH(created_at) as mes,  YEAR(created_at) as ano FROM et0 WHERE MONTH(created_at) = $value AND YEAR(created_at) = YEAR(CURRENT_DATE())
+                    GROUP BY created_at ");
+                }
+                return response()->json([
+                    'message' => 'Todo os ETo divido por ano.',
+                    'data' => $eto,
+                    'status_code' => 200
+                ], 200);
+                break;
+            case 4:
+                $anos = [];
+                $anosEto = DB::select('SELECT YEAR(created_at) AS anos FROM et0');
+                $et0ByAno = [];
+                foreach ($anosEto as $ano) {
+                    $anos[] = $ano->anos;
+                }
+                foreach ($anos as $ano) {
+                    $et0ByAno[$ano] = DB::select("SELECT AVG(et0) as ETo, YEAR(created_at) as anos FROM et0 WHERE YEAR(created_at) = $ano" . " GROUP BY YEAR(created_at)");
+                }
+                return response()->json([
+                    'message' => 'Todos os Eto por ano.',
+                    'data' => $et0ByAno,
+                    'status_code' => 200
+                ], 200);
+                dd($anos);
+                break;
+            default:
+                return response()->json([
+                    'message' => 'Erro ao listar os Eto.',
+                    'data' => [],
+                    'status_code' => 200
+                ], 200);
+                break;
+        }
+    }
 }

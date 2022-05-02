@@ -34,6 +34,7 @@ Route::controller(EstacaoController::class)->name('estacao.')->prefix('estacao')
 
 Route::controller(Eto::class)->name('eto.')->prefix('eto')->group(function() {
     Route::get('/', 'index')->name('index');
+    Route::get('/filtro/{id}', 'filtroEto')->name('filtro');
 });
 
 Route::controller(KcPlantaController::class)->name('kcplanta.')->prefix('kcplanta')->group(function() {
