@@ -94,8 +94,9 @@ class Eto extends Controller
                 ], 200);
                 break;
             case 3:
-                // retonar todos os medida dos Eto divido por mes do ano
-                $eto = DB::select("SELECT * FROM et0 WHERE YEAR(created_at) = YEAR(CURRENT_DATE())");
+                // retonar todos os medida dos Eto divido por mes
+                $eto = DB::select("SELECT et0 FROM et0 ");
+                
                 return response()->json([
                     'message' => 'Todos os Eto do ano atual.',
                     'data' => $eto,
