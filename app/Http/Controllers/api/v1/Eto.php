@@ -94,26 +94,18 @@ class Eto extends Controller
                 ], 200);
                 break;
             case 3:
-                $monthEtoDuplicade = DB::select("SELECT MONTH(created_at) FROM et0");
-                $monthEto = array_unique(array_column($monthEtoDuplicade, 'MONTH(created_at)'));
-                $eto = [];
-                foreach ($monthEto as $key => $value) {
-                    $eto[$value] = DB::select("SELECT AVG(et0) as et0,MONTH(created_at) as mes,  YEAR(created_at) as ano FROM et0 WHERE MONTH(created_at) = $value AND YEAR(created_at) = YEAR(CURRENT_DATE())
-                    GROUP BY created_at ");
-                }
+                // retonar todos os medida dos Eto divido por mes do ano
+                $eto = DB::select("SELECT * FROM et0 WHERE YEAR(created_at) = YEAR(CURRENT_DATE())");
                 return response()->json([
-                    'message' => 'Todo os ETo divido por ano.',
+                    'message' => 'Todos os Eto do ano atual.',
                     'data' => $eto,
                     'status_code' => 200
                 ], 200);
+                 
                 break;
             case 4:
                 $anos = [];
-                $anosEto = DB::select('SELECT YEAR(created_at) AS anos FROM et0');
                 $et0ByAno = [];
-                foreach ($anosEto as $ano) {
-                    $anos[] = $ano->anos;
-                }
                 foreach ($anos as $ano) {
                     $et0ByAno[$ano] = DB::select("SELECT AVG(et0) as ETo, YEAR(created_at) as anos FROM et0 WHERE YEAR(created_at) = $ano" . " GROUP BY YEAR(created_at)");
                 }
@@ -122,7 +114,6 @@ class Eto extends Controller
                     'data' => $et0ByAno,
                     'status_code' => 200
                 ], 200);
-                dd($anos);
                 break;
             default:
                 return response()->json([
