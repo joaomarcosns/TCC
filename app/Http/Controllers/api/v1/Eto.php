@@ -95,7 +95,7 @@ class Eto extends Controller
                 break;
             case 3:
                 // retonar todos os medida dos Eto divido por mes
-                $eto = DB::select("SELECT et0 FROM et0 ");
+                $eto = DB::select("SELECT et0, created_at FROM et0 ");
                 
                 return response()->json([
                     'message' => 'Todos os Eto do ano atual.',
@@ -105,16 +105,7 @@ class Eto extends Controller
                  
                 break;
             case 4:
-                $anos = [];
-                $et0ByAno = [];
-                foreach ($anos as $ano) {
-                    $et0ByAno[$ano] = DB::select("SELECT AVG(et0) as ETo, YEAR(created_at) as anos FROM et0 WHERE YEAR(created_at) = $ano" . " GROUP BY YEAR(created_at)");
-                }
-                return response()->json([
-                    'message' => 'Todos os Eto por ano.',
-                    'data' => $et0ByAno,
-                    'status_code' => 200
-                ], 200);
+                
                 break;
             default:
                 return response()->json([
