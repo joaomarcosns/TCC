@@ -9,6 +9,7 @@ use App\Models\KcPlanta;
 use App\Models\Setor;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SetorController extends Controller
 {
@@ -25,7 +26,7 @@ class SetorController extends Controller
             ->join('area', 'setor.area_id', '=', 'area.id')
             ->select('area.nome as area', 'setor.id', 'setor.identificador', 'data_das_podas.data_poda', 'setor.kc', 'setor.status', 'setor.etc')
             ->where('data_das_podas.status', '=', 1)
-            ->orderByRaw('area DESC')
+            ->orderByRaw('setor.id ASC')
             ->get();
 
         $kcPlata = KcPlanta::where('id', "1")->get();
@@ -164,6 +165,52 @@ class SetorController extends Controller
                 'data' => $th,
                 'status_code' => 404
             ], 404);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function consumoPorSetor() {
+        try {
+            $setor = DB::select('SELECT a.nome, s.identificador, FORMAT(s.etc, 4) as etc from setor s
+            inner join area a on (a.id = s.area_id)');
+
+            return response()->json([
+                'message' => 'Consumo por Setor',
+                'data' => $setor,
+                'status_code' => 200
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao listar os setores',
+                'data' => $e->getMessage(),
+                'status_code' => 200
+            ], 200);
+        }
+    }
+
+    public function consumoDaCultura() {
+        try {
+            $setor = DB::select('SELECT a.nome, FORMAT(SUM(s.etc), 4) as etc from setor s
+            inner join area a on (a.id = s.area_id)
+            group by a.nome');
+
+            return response()->json([
+                'message' => 'Consumo por Setor',
+                'data' => $setor,
+                'status_code' => 200
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao listar os setores',
+                'data' => $e->getMessage(),
+                'status_code' => 200
+            ], 200);
         }
     }
 }

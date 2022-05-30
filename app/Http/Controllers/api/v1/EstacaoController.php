@@ -197,7 +197,8 @@ class EstacaoController extends Controller
         return $et0;
     }
 
-    public function dadosMeteriologicos() {
+    public function dadosMeteriologicos()
+    {
         $diaAnterior = date('Y-m-d', strtotime('-1 day'));
         $res = Http::get("https://apitempo.inmet.gov.br/estacao/{$diaAnterior}/{$diaAnterior}/A426");
         // $res = Http::get("https://apitempo.inmet.gov.br/estacao/2022-04-29/2022-04-29/A426");
@@ -235,7 +236,7 @@ class EstacaoController extends Controller
 
         $data = [
             'radiacaoSolar' => ($radiacaoSolarMax + $radiacaoSolarMin) / 2,
-            'presaoAtmosferica' => ($pressaoAtmosfericaMax+$pressaoAtmosfericaMin) / 2,
+            'presaoAtmosferica' => ($pressaoAtmosfericaMax + $pressaoAtmosfericaMin) / 2,
             'umidade' => ($umidadeMax + $umidadeMin) / 2,
             'velociadaDoVento' => ($velocidadeDoVentoMax + $velocidadeDoVentoMin) / 2,
             'temperaturaMax' => $temperaturaMax,
@@ -244,4 +245,37 @@ class EstacaoController extends Controller
 
         return response()->json($data);
     }
+
+    public function historiocoTemperatura()
+    {
+        // primiero dia do ano
+        $diaAnterior = date('Y-m-d', strtotime('-1 day'));
+        $j = date('z', strtotime($diaAnterior)) + 1;
+        $primieroDiaDoAno = date('Y-m-d', strtotime('-' . $j . ' day'));
+        $hj = date('Y-m-d');
+        $res = Http::get("https://apitempo.inmet.gov.br/estacao/{$primieroDiaDoAno}/{$diaAnterior}/A426");
+        $object = $res->object();
+        $data = [];
+        $temperaturaMaxArray = [];
+        $temperaturaMinArray = [];
+        foreach ($object as $item) {
+            array_push($data, [
+                'data' => $item->DT_MEDICAO,
+                'temperaturaMax' => $item->TEM_MAX,
+                'temperaturaMin' => $item->TEM_MIN,
+            ]);
+        }
+        foreach ($data as $item) {
+            if($item['data'] == $item['data']){
+
+                array_push($temperaturaMaxArray, $item['temperaturaMax']);
+                array_push($temperaturaMinArray, $item['temperaturaMin']);
+            }
+        }
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+    
 }

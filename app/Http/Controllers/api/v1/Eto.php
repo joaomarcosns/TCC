@@ -105,7 +105,6 @@ class Eto extends Controller
                  
                 break;
             case 4:
-                
                 break;
             default:
                 return response()->json([
